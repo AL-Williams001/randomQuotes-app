@@ -10,8 +10,28 @@ export default async function getRandomQuote() {
 
 getRandomQuote()
   .then((data) => {
-    document.body.innerHTML = ` <article>
-    <h1>${data[0].content}</h1>
-<p>-${data[0].author}</p> </article> `;
+    const quoteHTML = `
+    <article>
+      <h1>${data[0].content}</h1>
+      <p>-${data[0].author}</p>
+    </article>
+    <button id="get-quote" class="get-quote">Get Quote</button>
+  `;
+    document.body.innerHTML = quoteHTML;
+
+    // Add event listener using event delegation
+    document.body.addEventListener("click", async (event) => {
+      if (event.target.matches("#get-quote")) {
+        const newData = await getRandomQuote();
+        const newQuoteHTML = `
+        <article>
+          <h1>${newData[0].content}</h1>
+          <p>-${newData[0].author}</p>
+        </article>
+        <button id="get-quote" class="get-quote">Get Quote</button>
+      `;
+        document.body.innerHTML = newQuoteHTML;
+      }
+    });
   })
   .catch((error) => console.error(error));
